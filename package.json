@@ -1,0 +1,33 @@
+{
+  "name": "hts-ui",
+  "version": "1.0.0",
+  "description": "HTS工作室黑白灰极简扁平 UI 组件库 · 无依赖 · 内置浅色/深色/跟随系统三态主题",
+  "main": "dist/hts-ui.js",
+  "style": "dist/hts-ui.css",
+  "files": [
+    "dist/",
+    "example.html",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "ui",
+    "css",
+    "components",
+    "minimal",
+    "monochrome",
+    "flat",
+    "dark-mode"
+  ],
+  "author": "HTStudiocent",
+  "license": "MIT",
+  "homepage": "https://www.haotis.top/ui/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HTStudiocent/hts-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HTStudiocent/hts-ui/issues"
+  }
+}
