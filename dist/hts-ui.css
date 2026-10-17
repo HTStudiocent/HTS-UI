@@ -1,5 +1,5 @@
 /* ============================================================
-   HTS UI v1.0 · 黑白灰极简扁平组件库
+   HTS UI v2.0 · 黑白灰极简扁平组件库（MCP 分发版）
    Author: HTStudiocent · 展示: https://www.haotis.top/ui/
    License: MIT
    用法：<link rel="stylesheet" href="dist/hts-ui.css">
@@ -589,10 +589,39 @@ input[type="checkbox"] {
 .progress-drag {
     cursor: pointer;
     touch-action: none;
+    overflow: visible; /* 让小球能超出 6px 轨道显示 */
 }
 
 .progress-drag .progress-bar {
     transition: none;
+    position: relative;
+}
+
+/* 拖动手柄小球：跟随填充末端，悬停/拖动时显示 */
+.progress-thumb {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    border: 2px solid var(--bg);
+    box-sizing: border-box;
+    transform: translateY(-50%) scale(0.4);
+    opacity: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.progress-drag:hover .progress-thumb,
+.progress-drag.dragging .progress-thumb {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+}
+
+.progress-drag.dragging .progress-thumb {
+    transform: translateY(-50%) scale(1.2);
 }
 
 /* ---------- 11. 弹窗与提示 ---------- */
@@ -943,7 +972,631 @@ input[type="checkbox"] {
     }
 }
 
-/* ---------- 15. 减少动效偏好 ---------- */
+/* ---------- 15. 更多组件（更新 2：15 种） ---------- */
+
+/* 15.1 面包屑 */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.breadcrumb a {
+    color: var(--text-muted);
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb .sep {
+    color: var(--border);
+}
+
+.breadcrumb .current {
+    color: var(--text);
+}
+
+/* 15.2 分页 */
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.pagination button,
+.pagination .page-dots {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text-soft);
+    font-size: 13px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.pagination button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagination .page-dots {
+    border: none;
+    background: none;
+    color: var(--text-faint);
+    cursor: default;
+}
+
+/* 15.3 标签页 */
+.tabs {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--block);
+}
+
+.tabs-nav button {
+    padding: 10px 18px;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tabs-nav button:hover {
+    color: var(--text);
+}
+
+.tabs-nav button.active {
+    color: var(--primary);
+    font-weight: bold;
+    background: var(--surface);
+    border-bottom-color: var(--primary);
+}
+
+.tabs-panel {
+    display: none;
+    padding: 18px 20px;
+    font-size: 14px;
+    color: var(--text-soft);
+}
+
+.tabs-panel.active {
+    display: block;
+}
+
+/* 15.4 折叠面板 */
+.accordion {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.accordion-item + .accordion-item {
+    border-top: 1px solid var(--border);
+}
+
+.accordion-head {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.accordion-head:hover {
+    background: var(--block);
+}
+
+.accordion-head::after {
+    content: '+';
+    font-size: 16px;
+    color: var(--text-muted);
+}
+
+.accordion-item.open .accordion-head::after {
+    content: '−';
+}
+
+.accordion-body {
+    display: none;
+    padding: 0 18px 14px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-soft);
+}
+
+.accordion-item.open .accordion-body {
+    display: block;
+}
+
+/* 15.5 步骤条 */
+.steps {
+    display: flex;
+}
+
+.step {
+    flex: 1;
+    position: relative;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.step .step-dot {
+    position: relative;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    margin: 0 auto 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.step::before {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: -50%;
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+}
+
+.step:first-child::before {
+    display: none;
+}
+
+.step.done {
+    color: var(--text-soft);
+}
+
+.step.done .step-dot {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.step.done::before,
+.step.active::before {
+    background: var(--primary);
+}
+
+.step.active {
+    color: var(--text);
+    font-weight: bold;
+}
+
+.step.active .step-dot {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* 15.6 时间线 */
+.timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background: var(--border);
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 18px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -19px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--primary);
+}
+
+.timeline-item .time {
+    font-size: 12px;
+    color: var(--text-faint);
+}
+
+.timeline-item .tl-title {
+    font-size: 14px;
+    color: var(--text);
+    margin: 2px 0;
+}
+
+.timeline-item .tl-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+}
+
+/* 15.7 头像 */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--on-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar.sm {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+}
+
+.avatar.lg {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+}
+
+.avatar.square {
+    border-radius: 10px;
+}
+
+.avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.avatar-group {
+    display: flex;
+}
+
+.avatar-group .avatar {
+    margin-left: -10px;
+    border: 2px solid var(--bg);
+}
+
+.avatar-group .avatar:first-child {
+    margin-left: 0;
+}
+
+/* 15.8 骨架屏 */
+.skeleton {
+    position: relative;
+    background: var(--block);
+    border-radius: 8px;
+    animation: hts-skeleton 1.2s ease-in-out infinite;
+}
+
+@keyframes hts-skeleton {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 10px;
+}
+
+.skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.skeleton-block {
+    height: 120px;
+}
+
+/* 15.9 提示条 */
+.alert {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-soft);
+    background: var(--block);
+}
+
+.alert .alert-title {
+    font-weight: bold;
+    color: var(--text);
+}
+
+.alert.strong {
+    background: var(--surface);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 10px 10px 0;
+}
+
+.alert.dark {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.alert.dark .alert-title {
+    color: var(--on-primary);
+}
+
+/* 15.10 空状态 */
+.empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.empty .empty-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--text-faint);
+    background: var(--block);
+}
+
+.empty .empty-title {
+    color: var(--text);
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+/* 15.11 加载中（环形） */
+.spinner {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: hts-spin 0.8s linear infinite;
+    vertical-align: -6px;
+}
+
+.spinner.sm {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    vertical-align: -3px;
+}
+
+.spinner.lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+    vertical-align: -8px;
+}
+
+@keyframes hts-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* 15.12 文字提示（纯 CSS，data-tip） */
+[data-tip] {
+    position: relative;
+}
+
+[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.92);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 12px;
+    line-height: 1.4;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 10;
+}
+
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+[data-tip].tip-bottom::after {
+    bottom: auto;
+    top: calc(100% + 8px);
+}
+
+/* 15.13 下拉菜单 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 150px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 8px 24px var(--shadow);
+    display: none;
+    z-index: 20;
+}
+
+.dropdown.open .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    color: var(--text-soft);
+}
+
+.dropdown-item:hover {
+    background: var(--block);
+    color: var(--text);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+}
+
+/* 15.14 分段控制 */
+.segmented {
+    display: inline-flex;
+    background: var(--block);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 3px;
+}
+
+.segmented button {
+    border: none;
+    background: transparent;
+    padding: 6px 16px;
+    font-size: 13px;
+    border-radius: 9px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.segmented button.active {
+    background: var(--surface);
+    color: var(--text);
+    font-weight: bold;
+    box-shadow: 0 1px 4px var(--shadow);
+}
+
+/* 15.15 列表组 */
+.list-group {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.list-group-item + .list-group-item {
+    border-top: 1px solid var(--border);
+}
+
+.list-group-item:hover {
+    background: var(--block);
+}
+
+.list-group-item .lg-sub {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex: 0 0 auto;
+}
+
+.list-group-item .lg-text {
+    min-width: 0;
+}
+
+.list-group-item .lg-desc {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ---------- 16. 减少动效偏好 ---------- */
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 
