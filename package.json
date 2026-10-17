@@ -1,33 +1,27 @@
 {
-  "name": "hts-ui",
-  "version": "1.0.0",
-  "description": "HTS工作室黑白灰极简扁平 UI 组件库 · 无依赖 · 内置浅色/深色/跟随系统三态主题",
-  "main": "dist/hts-ui.js",
-  "style": "dist/hts-ui.css",
-  "files": [
-    "dist/",
-    "example.html",
-    "README.md",
-    "LICENSE",
-    "CHANGELOG.md"
-  ],
+  "name": "hts-ui-mcp",
+  "version": "2.0.0",
+  "description": "HTS UI MCP 2.0 · 零依赖黑白灰 UI 组件库源码 MCP 服务器（HTML/CSS/JS 动效/响应式全量源码，供 AI 编码客户端调用）",
+  "main": "hts-ui-mcp.js",
+  "bin": {
+    "hts-ui-mcp": "hts-ui-mcp.js"
+  },
+  "scripts": {
+    "start": "node hts-ui-mcp.js",
+    "build-data": "node build-data.js"
+  },
   "keywords": [
+    "mcp",
     "ui",
+    "component-library",
     "css",
-    "components",
-    "minimal",
-    "monochrome",
-    "flat",
-    "dark-mode"
+    "zero-dependency",
+    "dark-mode",
+    "responsive"
   ],
   "author": "HTStudiocent",
   "license": "MIT",
-  "homepage": "https://www.haotis.top/ui/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/HTStudiocent/hts-ui.git"
-  },
-  "bugs": {
-    "url": "https://github.com/HTStudiocent/hts-ui/issues"
+  "engines": {
+    "node": ">=16"
   }
 }
