@@ -1,5 +1,5 @@
 /* ============================================================
-   HTS UI v1.0 JS · 无依赖组件行为层
+   HTS UI v2.0 JS · 无依赖组件行为层
    Author: HTStudiocent · 展示: https://www.haotis.top/ui/
    License: MIT
 
@@ -25,11 +25,19 @@
     function applyTheme() {
         var mode = getMode();
         var html = document.documentElement;
+        /* 切换瞬间禁用全页过渡：避免大量元素的颜色过渡同时触发造成卡顿 */
+        html.classList.add('theme-anim-off');
         if (mode === 'light' || mode === 'dark') {
             html.setAttribute('data-theme', mode);
         } else {
             html.removeAttribute('data-theme');
         }
+        void html.offsetWidth;
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                html.classList.remove('theme-anim-off');
+            });
+        });
     }
 
     function setMode(mode) {
@@ -256,6 +264,97 @@
         });
     }
 
+    /* ---------- 标签页：tabs-nav 按钮与 tabs-panel 按顺序对应 ---------- */
+    function initTabs(root) {
+        root.querySelectorAll('.tabs').forEach(function (tabs) {
+            if (tabs.dataset.htsBound) return;
+            tabs.dataset.htsBound = '1';
+            var navs = tabs.querySelectorAll('.tabs-nav button');
+            var panels = tabs.querySelectorAll('.tabs-panel');
+            navs.forEach(function (btn, i) {
+                btn.addEventListener('click', function () {
+                    navs.forEach(function (b) { b.classList.remove('active'); });
+                    panels.forEach(function (p) { p.classList.remove('active'); });
+                    btn.classList.add('active');
+                    if (panels[i]) panels[i].classList.add('active');
+                });
+            });
+        });
+    }
+
+    /* ---------- 折叠面板：点标题展开/收起本项 ---------- */
+    function initAccordions(root) {
+        root.querySelectorAll('.accordion-head').forEach(function (head) {
+            if (head.dataset.htsBound) return;
+            head.dataset.htsBound = '1';
+            head.addEventListener('click', function () {
+                head.parentElement.classList.toggle('open');
+            });
+        });
+    }
+
+    /* ---------- 下拉菜单：dropdown-toggle 开合，点外部或 ESC 关闭 ---------- */
+    function initDropdowns(root) {
+        root.querySelectorAll('.dropdown').forEach(function (dd) {
+            if (dd.dataset.htsBound) return;
+            dd.dataset.htsBound = '1';
+            var btn = dd.querySelector('.dropdown-toggle');
+            if (!btn) return;
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.querySelectorAll('.dropdown.open').forEach(function (o) {
+                    if (o !== dd) o.classList.remove('open');
+                });
+                dd.classList.toggle('open');
+            });
+        });
+        if (!document.body.dataset.htsDropdownDoc) {
+            document.body.dataset.htsDropdownDoc = '1';
+            document.addEventListener('click', function () {
+                document.querySelectorAll('.dropdown.open').forEach(function (o) {
+                    o.classList.remove('open');
+                });
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.dropdown.open').forEach(function (o) {
+                        o.classList.remove('open');
+                    });
+                }
+            });
+        }
+    }
+
+    /* ---------- 分段控制：同组互斥高亮 ---------- */
+    function initSegmented(root) {
+        root.querySelectorAll('.segmented').forEach(function (seg) {
+            if (seg.dataset.htsBound) return;
+            seg.dataset.htsBound = '1';
+            var btns = seg.querySelectorAll('button');
+            btns.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    btns.forEach(function (x) { x.classList.remove('active'); });
+                    b.classList.add('active');
+                });
+            });
+        });
+    }
+
+    /* ---------- 分页：带 data-page 的按钮点击切换当前页高亮 ---------- */
+    function initPagination(root) {
+        root.querySelectorAll('.pagination').forEach(function (pg) {
+            if (pg.dataset.htsBound) return;
+            pg.dataset.htsBound = '1';
+            var pages = pg.querySelectorAll('button[data-page]');
+            pages.forEach(function (b) {
+                b.addEventListener('click', function () {
+                    pages.forEach(function (x) { x.classList.remove('active'); });
+                    b.classList.add('active');
+                });
+            });
+        });
+    }
+
     /* ---------- 一键初始化 ---------- */
     function init(root) {
         root = root || document;
@@ -264,6 +363,11 @@
         initModals(root);
         initSideNav(root);
         initThemeSelects(root);
+        initTabs(root);
+        initAccordions(root);
+        initDropdowns(root);
+        initSegmented(root);
+        initPagination(root);
     }
 
     window.HTSUI = {
